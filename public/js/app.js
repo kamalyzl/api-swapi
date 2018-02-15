@@ -4,15 +4,6 @@ const container = document.getElementById('container');
 const modal = document.getElementById('body');
 
 
-(function images() {
-  let count = 0;
-  for (let i = 1; i < 88; i++) {
-    const urlImages = `https://starwars-visualguide.com/assets/img/characters/${i}.jpg`;
-    console.log(urlImages);
-    showImage(urlImages);
-  }
-})();
-
 getFetch();
 function getFetch() {
   // const url = `https://swapi.co/api/people/?search=${searchValue}`;
@@ -21,10 +12,14 @@ function getFetch() {
     const url = `https://swapi.co/api/people/${i}/`;
     fetch(url)
       .then((resp) => resp.json())
-      .then(function(data) {
-        console.log(data);
-        console.log(data.name);       
-        getModal(data);
+      .then(function (data) {
+        // console.log(data);
+        // console.log(data.name);
+        const characters = ` <figure class="images" id="containerImages" data-name="${data.name}">
+        <img class="image" data-target="#exampleModal" data-toggle="modal" src="https://starwars-visualguide.com/assets/img/characters/${i}.jpg" alt="${data.name}">
+        <figcaption >${data.name}</figcaption>
+      </figure>`;
+        container.innerHTML += characters;
       })
       .catch(function(error) {
         console.log(JSON.stringify(`Error ${error}`));
@@ -32,19 +27,12 @@ function getFetch() {
   }
 };
 
+$(document).on('click', 'figure', function() {
+  let el = $(this);
+  console.log(event.target);
+  let name = document.getElementById('modal-title');
+  let modal = document.getElementById('body');
+  name.innerHTML = el.data('name');
+  let text = 
+});
 
-function showImage(data) {
-  let img = document.createElement('img');
-  img.src = (data);
-  img.className = 'image';
-  img.setAttribute('data-target', '#exampleModal');
-  img.setAttribute('data-toggle', 'modal');
-  container.appendChild(img);
-};
-
-function getModal(data) { 
-  let title = document.createElement('h2'); 
-  title.innerHTML = data.name;
-  modal.appendChild(title);
-};
- 
